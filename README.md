@@ -1,2 +1,2 @@
-# Geospatial_Analysis_with_R
+# Geospatial Analysis with R
 Geospatial analysis slide!
