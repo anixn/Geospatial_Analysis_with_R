@@ -1,0 +1,197 @@
+---
+title: "Geospatial Analysis with<br />_R-Programming_"
+subtitle: ".f3[🗺️ | Application of 
+'raster', 'terra', & 'gdal']"
+author: "**Dr. Ankit Deshmukh**"
+institute: "Department of Civil Engineering,<br />Pandit Deendayal Energy University, Gandhinagar"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output:
+  xaringan::moon_reader:
+    css: ["css/default.css", "css/metropolis.css"]
+    lib_dir: libs
+    nature:
+      highlightStyle: solarized-light
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: 16:9
+---
+
+class: middle inverse
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(out.width = "100%", cache = FALSE, echo = TRUE, message = FALSE, warning = FALSE, fig.show = TRUE, hiline = TRUE, results = "asis")
+
+# Bibliography and Citation
+library(RefManageR)
+library(bibtex)
+BibOptions(check.entries = FALSE, bib.style = "authoryear", style = "text", first.inits = FALSE)
+bib <- ReadBib("./data/Bibliography.bib")
+```
+
+```{r, echo=FALSE, include=TRUE}
+library(xaringanExtra)
+use_logo(image_url = "./css/Anix-Logo.png", link_url = "https://www.ankitdeshmukh.com/", width = "40px", height = "40px")
+use_progress_bar(color = "#25586088", location = "top", height = "0.25em")
+use_xaringan_extra(c("tile_view", "tachyons", "use_logo", "use_progress_bar"))
+use_extra_styles(hover_code_line = TRUE, mute_unhighlighted_code = FALSE)
+```
+
+<!-- ------------------------- Start your slides ------------------------- -->
+
+# .f2.gold[“It is a capital mistake to theorize before one has data.”] 
+.f3[~ Sherlock Holmes in “A study in Scarlet” by Arthur Conan Doyle]
+
+---
+class: .incremental
+
+## Outline of this talk!
+- .f2[What is Geo spatial analysis.]
+--
+
+- .f2[Why use scripting.]
+--
+
+- .f2[R Programming!]
+  - Quick setup of R and Rstudio.
+  - Basics of R. 
+--
+
+- .f2[Geo spatial Analysis with R.]
+  - Basics of GIS datatypes
+  - Raster operations.
+  - Vector operations.
+  - Statticaics for GIS data.
+  - etc...
+https://agroimpacts.github.io/geospaar/
+
+.footnote.i[You can access the slides from: **[ankitdeshmukh.com/slides/GST_with_R/**](www.ankitdeshmukh.com/slides/GST_with_R/)]
+
+---
+class: .incremental
+## What is Geo-spatial analysis
+
+A multidisciplinary approach involving patterns identification, relationships, and trends within geographic data. It integrates concepts from geography, cartography, geographic information systems (GIS), and statistical analysis to gain insights into spatial phenomena. 
+
+_Key components of geo-spatial analysis include:_
+
+--
+- **Geographic Information Systems (GIS):** GIS is a technology that enables the capture, storage, analysis, and visualization of spatial data.
+
+--
+- **Remote Sensing:** Remote sensing involves acquiring information about the Earth's surface without direct physical contact.
+
+--
+- **Spatial Statistics:** This involves the application of statistical techniques to analyze spatial patterns and relationships.
+
+--
+- **Spatial Modeling:** This involves creating mathematical representations of spatial relationships to simulate and predict real-world phenomena. 
+
+---
+class: .incremental
+## Why use scripting
+
+.pull-left[
+<img src="https://imgs.xkcd.com/comics/dependency.png" class="w-70 br1 dib center">
+.footnote[Image Sourse: https://xkcd.com/2347/]
+]
+--
+
+.pull-right[
+<img src="https://imgs.xkcd.com/comics/automation.png" class="w-90 br1 dib center">
+.footnote[Image Sourse: https://xkcd.com/1319/]
+]
+ 
+---
+## The shift towards open geospatial:
+Open source refers to software that is designed to be publicly accessible, allowing anyone to see, modify, and distribute the code as they see fit.
+
+.pull-left[
+- Open Data applies the principles of free and open to geo-spatial data.
+
+- Open Education applies the principles of open source to the creation of teaching materials allowing organizations to share syllabus materials reducing cost and reaching a wider audience.
+
+- Open Standards promote inter-operability between applications. 
+
+- Open standard are a key tool allowing geo-spatial practitioners to work together, with the added benefit of avoiding **technology lock-in**.
+]
+
+.pull-right[
+<img src="images/Open Source.jpg" class="w-80 br2 dib center">
+]
+
+---
+## Why to use open sourced tools/software
+.f3[
+- **Free to use:** Open-source software is often available at no cost, saving you money on licensing fees.
+- **Community support:** You can benefit from a large community of users and developers who provide support, resources, and updates.
+- **Customization:** Open-source software allows you to modify and adapt the code to fit your specific needs and preferences.
+- **Interoperability:** It seamlessly integrates with other software and systems, promoting compatibility and collaboration.
+- **Transparency:** The code is openly accessible, ensuring transparency and trust in the software's functionality and security.
+]
+
+---
+class: .incremental
+# Basic data type in GIS
+
+1. Raster data consists of continuous cells or pixels, such as elevation or satellite imagery.
+
+
+--
+2. Attribute data describes the characteristics or properties of spatial features, such as name, population, area, etc. 
+>  - For example, a polygon layer of countries may have an attribute table that contains information about each country’s name, capital, GDP, etc.
+
+
+--
+<br /> 
+.co-note[
+GeoPackage (GPKG) is an open, non-proprietary, platform-independent and standards-based data format for geographic information systems. <br /> 
+
+- It is built as a set of conventions over a SQLite database. <br /> 
+
+- GeoPackage is an open, standards-based, platform-independent, portable, self-describing, compact format for transferring geospatial information. <br /> 
+]
+
+---
+# Map in slides
+```{r fig.height=7, echo=FALSE}
+if(!require(leaflet)){install.packages("leaflet");library(leaflet)}
+
+leaflet() %>%
+  addTiles() %>%
+  setView(lng = 74, lat = 23.4, zoom = 6) %>%
+    addMarkers(lng = 72.664410, lat = 23.156644) %>%
+    addCircles(lng = 72.664410, lat = 23.156644, color = "#F00", radius = 300)
+```
+
+---
+```{r fig.height=7, width = 6, echo=FALSE}
+library(leaflet)
+
+leaflet() %>%
+  addTiles() %>%
+  setView(lng = 72.664410, lat = 23.156644, zoom = 8) %>%
+  addMiniMap(width = 150, height = 150)
+```
+---
+
+## Image properties
+Create SpatRaster objects for single Landsat layers (bands)
+
+> This package is an attempt to climb on the shoulders of giants (GDAL, PROJ, GEOS, NCDF, GeographicLib, Rcpp, R).
+
+```{r}
+library(terra)
+
+```
+
+```{r, eval=FALSE,echo=TRUE}
+if(!require(leaflet)){install.packages("leaflet");library(leaflet)}
+
+leaflet() %>%
+  addTiles() %>%
+  setView(lng = 74, lat = 23.4, zoom = 6) %>%
+    addMarkers(lng = 72.664410, lat = 23.156644) %>%
+    addCircles(lng = 72.664410, lat = 23.156644, color = "#F00", radius = 300)
+```
+
