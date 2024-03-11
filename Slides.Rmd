@@ -1,7 +1,7 @@
 ---
 title: "Geospatial Analysis with<br />_R-Programming_"
 subtitle: ".f3[🗺️ | Application of 
-'raster', 'terra', & 'gdal']"
+'terra', 'raster', & 'gdal']"
 author: "**Dr. Ankit Deshmukh**"
 institute: "Department of Civil Engineering,<br />Pandit Deendayal Energy University, Gandhinagar"
 date: "`r format(Sys.time(), '%d %B %Y')`"
@@ -39,17 +39,17 @@ use_extra_styles(hover_code_line = TRUE, mute_unhighlighted_code = FALSE)
 
 <!-- ------------------------- Start your slides ------------------------- -->
 
-# .f2.gold[“It is a capital mistake to theorize before one has data.”] 
-.f3[~ Sherlock Holmes in “A study in Scarlet” by Arthur Conan Doyle]
+# .f2.gold[“‘A map says to you.<br />Read me carefully, follow me closely, doubt me not ... <br />I am the earth in the palm of your hands.”] 
+.b.f3[~ Beryl Markham]
 
 ---
 class: .incremental
 
 ## Outline of this talk!
-- .f2[What is Geo spatial analysis.]
+- .f2[What is Geo-spatial analysis?]
 --
 
-- .f2[Why use scripting.]
+- .f2[Why use scripting for Spatial analysis?]
 --
 
 - .f2[R Programming!]
@@ -61,19 +61,21 @@ class: .incremental
   - Basics of GIS datatypes
   - Raster operations.
   - Vector operations.
-  - Statticaics for GIS data.
+  - Statistics for GIS data.
   - etc...
-https://agroimpacts.github.io/geospaar/
+
 
 .footnote.i[You can access the slides from: **[ankitdeshmukh.com/slides/GST_with_R/**](www.ankitdeshmukh.com/slides/GST_with_R/)]
 
 ---
 class: .incremental
-## What is Geo-spatial analysis
+## What do we understand from "Geospatial Analysis"?
 
-A multidisciplinary approach involving patterns identification, relationships, and trends within geographic data. It integrates concepts from geography, cartography, geographic information systems (GIS), and statistical analysis to gain insights into spatial phenomena. 
+A multidisciplinary approach involving patterns identification, relationships, and trends within geographic data. 
 
-_Key components of geo-spatial analysis include:_
+- Concepts from geography, cartography, geographic information systems (GIS), and statistical analysis to gain insights into spatial phenomena. 
+
+.f3[Key components of geo-spatial analysis include:]
 
 --
 - **Geographic Information Systems (GIS):** GIS is a technology that enables the capture, storage, analysis, and visualization of spatial data.
@@ -89,17 +91,40 @@ _Key components of geo-spatial analysis include:_
 
 ---
 class: .incremental
-## Why use scripting
+## What is Scripting?
 
 .pull-left[
-<img src="https://imgs.xkcd.com/comics/dependency.png" class="w-70 br1 dib center">
-.footnote[Image Sourse: https://xkcd.com/2347/]
-]
---
+- Scripting refers to writing a series of instructions or commands that can be executed by a computer. 
+
+- These instructions are written in a programming language (R, Python, SQL)
+
+- We use R programming language for this. 
+
+- R is scripting language specifically designed for statistical computing and graphics. ]
 
 .pull-right[
-<img src="https://imgs.xkcd.com/comics/automation.png" class="w-90 br1 dib center">
-.footnote[Image Sourse: https://xkcd.com/1319/]
+<img src="images/R Programming.jpg" class="w-100 br4 dib center">
+]
+
+---
+## Why use scripting
+.pull-left[
+- **Control:** With scripting, you have precise control over every step of the analysis process. 
+- **Efficiency:** Scripting allows for automation of repetitive tasks, saving time and effort compared to manually clicking through GUI interfaces.
+
+- **Speed:** Scripting allows for faster execution of repetitive tasks compared to navigating through multiple GUI menus. 
+
+- **Customization:** Scripting offers greater flexibility in tailoring analyses to your specific needs. 
+
+- **Reproducibility:** This is crucial for transparency, peer review, and building upon existing research.
+
+
+- **Scalability:** Efficient scripts can handle large datasets more efficiently than GUI-based tools.
+]
+
+.pull-right[
+<img src="https://imgs.xkcd.com/comics/dependency.png" class="w-70 br1 dib center">
+.footnote[Image Sourse: https://xkcd.com/2347/]
 ]
  
 ---
@@ -133,65 +158,252 @@ Open source refers to software that is designed to be publicly accessible, allow
 ---
 class: .incremental
 # Basic data type in GIS
-
-1. Raster data consists of continuous cells or pixels, such as elevation or satellite imagery.
-
+- **Raster data** consists of continuous cells or pixels, such as elevation or satellite imagery.
 
 --
-2. Attribute data describes the characteristics or properties of spatial features, such as name, population, area, etc. 
->  - For example, a polygon layer of countries may have an attribute table that contains information about each country’s name, capital, GDP, etc.
-
+- **Vector data** is the most common type of GIS data. Vector data represents geographic data symbolized as points, lines, or polygons.
 
 --
-<br /> 
-.co-note[
-GeoPackage (GPKG) is an open, non-proprietary, platform-independent and standards-based data format for geographic information systems. <br /> 
 
-- It is built as a set of conventions over a SQLite database. <br /> 
-
-- GeoPackage is an open, standards-based, platform-independent, portable, self-describing, compact format for transferring geospatial information. <br /> 
-]
+- **GeoPackage (GPKG)** is an open, non-proprietary, platform-independent and standards-based data format for geographic information systems. 
+  - GeoPackage can store multiple types of geospatial data, including vector data, raster data, and attribute data.
+  - Portability: GeoPackage is a single file format that can be easily transferred between different devices, operating systems, and GIS software.
 
 ---
-# Map in slides
-```{r fig.height=7, echo=FALSE}
-if(!require(leaflet)){install.packages("leaflet");library(leaflet)}
+class: .incremental
+## R package for Geospatial analysis
 
-leaflet() %>%
-  addTiles() %>%
-  setView(lng = 74, lat = 23.4, zoom = 6) %>%
-    addMarkers(lng = 72.664410, lat = 23.156644) %>%
-    addCircles(lng = 72.664410, lat = 23.156644, color = "#F00", radius = 300)
-```
+--
+- **terra:** Spatial Data Analysis - Offers advanced raster data handling capabilities, including large dataset support and high-performance computation. 
+
+--
+- **raster:** Raster Data Analysis - Offers functions for working with gridded spatial data
+
+--
+- **sf:** Simple Features for R - A comprehensive package for working with spatial data using modern data structures and methods.
+
+--
+- **stars:** Spatiotemporal Arrays - Provides a unified framework for handling spatiotemporal raster data, allowing for efficient analysis and visualization.
+
+--
+- **rgdal:** Bindings for the 'Geospatial' Data Abstraction Library
+
+--
+- **leaflet:** Interactive Web Maps with the JavaScript 'Leaflet' Library
+spatial: Functions for Kriging and Point Pattern Analysis - Implements various spatial statistical methods.
+
+--
+- **tmap:** Thematic Maps - Provides a flexible framework for creating thematic maps. <br />
+
+--
+etc...
 
 ---
-```{r fig.height=7, width = 6, echo=FALSE}
-library(leaflet)
 
-leaflet() %>%
-  addTiles() %>%
-  setView(lng = 72.664410, lat = 23.156644, zoom = 8) %>%
-  addMiniMap(width = 150, height = 150)
-```
----
-
-## Image properties
-Create SpatRaster objects for single Landsat layers (bands)
+## `terra`: for spatial data analysis
 
 > This package is an attempt to climb on the shoulders of giants (GDAL, PROJ, GEOS, NCDF, GeographicLib, Rcpp, R).
 
-```{r}
-library(terra)
+- `terra` provides methods to manipulate geographic (spatial) data in "raster" and "vector" form.
 
-```
+- **Vector** spatial data (points, lines, polygons) are typically used to represent discrete spatial entities, such as a road, country, or bus stop
 
-```{r, eval=FALSE,echo=TRUE}
+---
+# Adding basic Map in to the slides 
+```{r fig.height=7, echo=FALSE}
 if(!require(leaflet)){install.packages("leaflet");library(leaflet)}
+if(!require(terra)){install.packages("terra");library(terra)}
+
 
 leaflet() %>%
   addTiles() %>%
-  setView(lng = 74, lat = 23.4, zoom = 6) %>%
+  setView(lng = 72.664410, lat = 23.156644, zoom = 11) %>%
     addMarkers(lng = 72.664410, lat = 23.156644) %>%
-    addCircles(lng = 72.664410, lat = 23.156644, color = "#F00", radius = 300)
+    addCircles(lng = 72.664410, lat = 23.156644, color = "#F00", radius = 300) %>%
+    addMiniMap(width = 150, height = 150)
 ```
 
+---
+class: .incremental
+## Basics of R-Programming
+.note[
+- It’s open-source. No fees or licenses are needed.
+- It’s platform-independent.
+- It has lots of packages. 
+- It’s great for statistics. 
+- It’s well suited for Machine Learning. 
+- R lets you perform data wrangling. 
+- R is still growing.
+]
+
+--
+.f3[
+- [Getting Started with R Programming]( https://ankitdeshmukh.com/post/2021-09-20-getting-started-with-r/)<br /> 
+- [Hello R Markdown!](https://ankitdeshmukh.com/post/2021-12-01-r-markdown/)
+]
+
+.f3.blue.b[to the RStudio ...]
+
+---
+## Plotting the map 
+
+.pull-left[
+```{r, eval=FALSE}
+# Plot the output in a map.
+plot(ahm_b10, type="interval", ylab = "Latitude [m]", 
+     xlab = "Longitude [m]", main = "Ahemdabad District")
+
+plot(v, border = "#220066", 
+     lwd = 1.5, add = TRUE)
+
+sbar(50000, xy = "bottomright", 
+     type="bar", below="m", 
+     label=c(0,25000,50000), cex=0.8)
+north(type=3, cex=1)
+```
+]
+
+.pull-right[
+```{r, include=TRUE, echo=FALSE, fig.align='center'}
+knitr::include_graphics("images/Ahm10.png", error = FALSE)
+```
+]
+
+---
+
+## This different from the traditional GIS software:
+<img src="images/Incorrect_Projection.png" class="w-80 br4 dib center">
+
+.b.blue[Images with different projection (EPSG:32642 and EPSG:32643 image.)]
+
+---
+## A raster data file
+
+```{r, results='markup'}
+raster_data <- rast(x = "./data/LS_8_Band_2.tif") # reading the file
+raster_data # Printing
+```
+
+---
+
+## True color composite with visible RGB band
+.pull-left[
+```{r, eval=FALSE}
+b2 <- rast(x = "./data/LS_8_Band_2.tif") # Blue
+b3 <- rast(x = "./data/LS_8_Band_3.tif") # Green
+b4 <- rast(x = "./data/LS_8_Band_4.tif") # Red
+
+landsatRGB <- c(b4, b3, b2)
+plotRGB(landsatRGB, stretch = "lin")
+```
+]
+
+.pull-right[
+```{r, echo=FALSE}
+b2 <- rast(x = "./data/LS_8_Band_2.tif") # Blue
+b3 <- rast(x = "./data/LS_8_Band_3.tif") # Green
+b4 <- rast(x = "./data/LS_8_Band_4.tif") # Red
+
+landsatRGB <- c(b4, b3, b2)
+plotRGB(landsatRGB, stretch = "lin")
+```
+]
+
+---
+## False color composite with NIR, Red, Blue band
+.pull-left[
+```{r, eval=FALSE}
+b2 <- rast(x = "./data/LS_8_Band_2.tif") # Blue
+b4 <- rast(x = "./data/LS_8_Band_4.tif") # Red
+b5 <- rast(x = "./data/LS_8_Band_5.tif") # NIR
+
+landsatFCC <- c(b5, b4, b2)
+plotRGB(landsatFCC, stretch = "lin")
+```
+]
+
+.pull-right[
+```{r, echo=FALSE}
+b2 <- rast(x = "./data/LS_8_Band_2.tif") # Blue
+b4 <- rast(x = "./data/LS_8_Band_4.tif") # Red
+b5 <- rast(x = "./data/LS_8_Band_5.tif") # NIR
+
+landsatFCC <- c(b5, b4, b2)
+plotRGB(landsatFCC, stretch = "lin")
+```
+]
+
+---
+## Reading vector data and copping
+```{r, eval=FALSE}
+if(!require(sf)){install.packages("sf");library(sf)}
+raster_data <- rast( "./data/Large Tiff/Landsat-8-B2.TIF")
+vector_data <- vect(st_read("./Data/Large Tiff/Bounding_Box.gpkg"))
+cropped_data <- terra::crop(x = raster_data, y = vector_data, mask = TRUE) 
+
+writeRaster(x = cropped_data, filename = "./data/Cropped_Image.tif")
+
+```
+
+<img src="images/Ahm_Data.png" class="w-50 br4 dib center">
+
+---
+## Single band and composite maps
+```{r, fig.dim=2,eval=FALSE}
+par(mfrow = c(2,2))
+plot(b2, main = "Blue", col = gray(0:100 / 100))
+plot(b3, main = "Green", col = gray(0:100 / 100))
+plot(b4, main = "Red", col = gray(0:100 / 100))
+plot(b5, main = "NIR", col = gray(0:100 / 100))
+```
+<img src="images/Band_GrayScale.png" class="w-60 br4 dib center">
+
+---
+class: .incremental
+# Landsat Bands
+
+.pull-left[
+```{r, results='markup'}
+rast_fname <- paste0("./data/LS_8_Band_",c(1:7,10),".tif")
+sample_rast <- rast(rast_fname)
+names(sample_rast) <- c('ultra-blue', 'blue', 'green', 
+                        'red', 'NIR', 'SWIR1', 'SWIR2', 
+                        "TIR")
+
+sample_rast
+```
+]
+
+.pull-right[
+<img src="images/Landsat_Band.jpg" class="w-80 br1 dib center">
+]
+
+
+---
+## Vegetation indices
+Let’s define a general function for a ratio based (vegetation) index. In the function below, img is a muti-layer SpatRaster object and i and k are the indices of the layers (layer numbers) used to compute the vegetation index.
+
+```{r}
+vi <- function(img, k, i) {
+    bk <- img[[k]]
+    bi <- img[[i]]
+    vi <- (bk - bi) / (bk + bi)
+    return(vi)
+}
+```
+    
+    
+###  For Landsat NIR = 5, red = 4.
+```{r, eval=FALSE}
+ndvi <- vi(landsat, 5, 4)
+plot(ndvi, col=rev(terrain.colors(10)), main = "NDVI")
+plot(ndvi, col=rev(rainbow(10)), main="Landsat-NDVI")
+
+
+GNDVI <- vi(landsat, 5, 3)
+```
+
+---
+## References
+- https://github.com/anixn/Geospatial_Analysis_with_R.git
+- https://agroimpacts.github.io/geospaar/

@@ -4,7 +4,7 @@
     <title>Geospatial Analysis with R-Programming</title>
     <meta charset="utf-8" />
     <meta name="author" content="Dr. Ankit Deshmukh" />
-    <meta name="date" content="2024-03-09" />
+    <meta name="date" content="2024-03-12" />
     <script src="libs/header-attrs/header-attrs.js"></script>
     <script src="libs/xaringanExtra-progressBar/progress-bar.js"></script>
     <link href="libs/tile-view/tile-view.css" rel="stylesheet" />
@@ -34,7 +34,7 @@ class: center, middle, inverse, title-slide
 # Geospatial Analysis with<br /><em>R-Programming</em>
 ]
 .subtitle[
-## .f3[🗺️ | Application of ‘raster’, ‘terra’, &amp; ‘gdal’]
+## .f3[🗺️ | Application of ‘terra’, ‘raster’, &amp; ‘gdal’]
 ]
 .author[
 ### <strong>Dr. Ankit Deshmukh</strong>
@@ -43,7 +43,7 @@ class: center, middle, inverse, title-slide
 ### Department of Civil Engineering,<br />Pandit Deendayal Energy University, Gandhinagar
 ]
 .date[
-### 09 March 2024
+### 12 March 2024
 ]
 
 ---
@@ -108,17 +108,17 @@ top:1em;right:1em;
 
 &lt;!-- ------------------------- Start your slides ------------------------- --&gt;
 
-# .f2.gold[“It is a capital mistake to theorize before one has data.”] 
-.f3[~ Sherlock Holmes in “A study in Scarlet” by Arthur Conan Doyle]
+# .f2.gold[“‘A map says to you.&lt;br /&gt;Read me carefully, follow me closely, doubt me not ... &lt;br /&gt;I am the earth in the palm of your hands.”] 
+.b.f3[~ Beryl Markham]
 
 ---
 class: .incremental
 
 ## Outline of this talk!
-- .f2[What is Geo spatial analysis.]
+- .f2[What is Geo-spatial analysis?]
 --
 
-- .f2[Why use scripting.]
+- .f2[Why use scripting for Spatial analysis?]
 --
 
 - .f2[R Programming!]
@@ -130,19 +130,21 @@ class: .incremental
   - Basics of GIS datatypes
   - Raster operations.
   - Vector operations.
-  - Statticaics for GIS data.
+  - Statistics for GIS data.
   - etc...
-https://agroimpacts.github.io/geospaar/
+
 
 .footnote.i[You can access the slides from: **[ankitdeshmukh.com/slides/GST_with_R/**](www.ankitdeshmukh.com/slides/GST_with_R/)]
 
 ---
 class: .incremental
-## What is Geo-spatial analysis
+## What do we understand from "Geospatial Analysis"?
 
-A multidisciplinary approach involving patterns identification, relationships, and trends within geographic data. It integrates concepts from geography, cartography, geographic information systems (GIS), and statistical analysis to gain insights into spatial phenomena. 
+A multidisciplinary approach involving patterns identification, relationships, and trends within geographic data. 
 
-_Key components of geo-spatial analysis include:_
+- Concepts from geography, cartography, geographic information systems (GIS), and statistical analysis to gain insights into spatial phenomena. 
+
+.f3[Key components of geo-spatial analysis include:]
 
 --
 - **Geographic Information Systems (GIS):** GIS is a technology that enables the capture, storage, analysis, and visualization of spatial data.
@@ -158,17 +160,40 @@ _Key components of geo-spatial analysis include:_
 
 ---
 class: .incremental
-## Why use scripting
+## What is Scripting?
 
 .pull-left[
-&lt;img src="https://imgs.xkcd.com/comics/dependency.png" class="w-70 br1 dib center"&gt;
-.footnote[Image Sourse: https://xkcd.com/2347/]
-]
---
+- Scripting refers to writing a series of instructions or commands that can be executed by a computer. 
+
+- These instructions are written in a programming language (R, Python, SQL)
+
+- We use R programming language for this. 
+
+- R is scripting language specifically designed for statistical computing and graphics. ]
 
 .pull-right[
-&lt;img src="https://imgs.xkcd.com/comics/automation.png" class="w-90 br1 dib center"&gt;
-.footnote[Image Sourse: https://xkcd.com/1319/]
+&lt;img src="images/R Programming.jpg" class="w-100 br4 dib center"&gt;
+]
+
+---
+## Why use scripting
+.pull-left[
+- **Control:** With scripting, you have precise control over every step of the analysis process. 
+- **Efficiency:** Scripting allows for automation of repetitive tasks, saving time and effort compared to manually clicking through GUI interfaces.
+
+- **Speed:** Scripting allows for faster execution of repetitive tasks compared to navigating through multiple GUI menus. 
+
+- **Customization:** Scripting offers greater flexibility in tailoring analyses to your specific needs. 
+
+- **Reproducibility:** This is crucial for transparency, peer review, and building upon existing research.
+
+
+- **Scalability:** Efficient scripts can handle large datasets more efficiently than GUI-based tools.
+]
+
+.pull-right[
+&lt;img src="https://imgs.xkcd.com/comics/dependency.png" class="w-70 br1 dib center"&gt;
+.footnote[Image Sourse: https://xkcd.com/2347/]
 ]
  
 ---
@@ -202,56 +227,265 @@ Open source refers to software that is designed to be publicly accessible, allow
 ---
 class: .incremental
 # Basic data type in GIS
-
-1. Raster data consists of continuous cells or pixels, such as elevation or satellite imagery.
-
+- **Raster data** consists of continuous cells or pixels, such as elevation or satellite imagery.
 
 --
-2. Attribute data describes the characteristics or properties of spatial features, such as name, population, area, etc. 
-&gt;  - For example, a polygon layer of countries may have an attribute table that contains information about each country’s name, capital, GDP, etc.
-
+- **Vector data** is the most common type of GIS data. Vector data represents geographic data symbolized as points, lines, or polygons.
 
 --
-&lt;br /&gt; 
-.co-note[
-GeoPackage (GPKG) is an open, non-proprietary, platform-independent and standards-based data format for geographic information systems. &lt;br /&gt; 
 
-- It is built as a set of conventions over a SQLite database. &lt;br /&gt; 
-
-- GeoPackage is an open, standards-based, platform-independent, portable, self-describing, compact format for transferring geospatial information. &lt;br /&gt; 
-]
+- **GeoPackage (GPKG)** is an open, non-proprietary, platform-independent and standards-based data format for geographic information systems. 
+  - GeoPackage can store multiple types of geospatial data, including vector data, raster data, and attribute data.
+  - Portability: GeoPackage is a single file format that can be easily transferred between different devices, operating systems, and GIS software.
 
 ---
-# Map in slides
-<div class="leaflet html-widget html-fill-item" id="htmlwidget-be57d17d20e2c64a96d2" style="width:100%;height:504px;"></div>
-<script type="application/json" data-for="htmlwidget-be57d17d20e2c64a96d2">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"https://openstreetmap.org/copyright/\">OpenStreetMap<\/a>,  <a href=\"https://opendatacommons.org/licenses/odbl/\">ODbL<\/a>"}]},{"method":"addMarkers","args":[23.156644,72.66441,null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},null,null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addCircles","args":[23.156644,72.66441,300,null,null,{"interactive":true,"className":"","stroke":true,"color":"#F00","weight":5,"opacity":0.5,"fill":true,"fillColor":"#F00","fillOpacity":0.2},null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null,null]}],"setView":[[23.4,74],6,[]],"limits":{"lat":[23.156644,23.156644],"lng":[72.66441,72.66441]}},"evals":[],"jsHooks":[]}</script>
+class: .incremental
+## R package for Geospatial analysis
+
+--
+- **terra:** Spatial Data Analysis - Offers advanced raster data handling capabilities, including large dataset support and high-performance computation. 
+
+--
+- **raster:** Raster Data Analysis - Offers functions for working with gridded spatial data
+
+--
+- **sf:** Simple Features for R - A comprehensive package for working with spatial data using modern data structures and methods.
+
+--
+- **stars:** Spatiotemporal Arrays - Provides a unified framework for handling spatiotemporal raster data, allowing for efficient analysis and visualization.
+
+--
+- **rgdal:** Bindings for the 'Geospatial' Data Abstraction Library
+
+--
+- **leaflet:** Interactive Web Maps with the JavaScript 'Leaflet' Library
+spatial: Functions for Kriging and Point Pattern Analysis - Implements various spatial statistical methods.
+
+--
+- **tmap:** Thematic Maps - Provides a flexible framework for creating thematic maps. &lt;br /&gt;
+
+--
+etc...
 
 ---
-<div class="leaflet html-widget html-fill-item" id="htmlwidget-34568c7b33cf0e45c883" style="width:100%;height:504px;"></div>
-<script type="application/json" data-for="htmlwidget-34568c7b33cf0e45c883">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"https://openstreetmap.org/copyright/\">OpenStreetMap<\/a>,  <a href=\"https://opendatacommons.org/licenses/odbl/\">ODbL<\/a>"}]},{"method":"addMiniMap","args":[null,null,"bottomright",150,150,19,19,-5,false,false,false,false,false,false,{"color":"#ff7800","weight":1,"clickable":false},{"color":"#000000","weight":1,"clickable":false,"opacity":0,"fillOpacity":0},{"hideText":"Hide MiniMap","showText":"Show MiniMap"},[]]}],"setView":[[23.156644,72.66441],8,[]]},"evals":[],"jsHooks":[]}</script>
----
 
-## Image properties
-Create SpatRaster objects for single Landsat layers (bands)
+## `terra`: for spatial data analysis
 
 &gt; This package is an attempt to climb on the shoulders of giants (GDAL, PROJ, GEOS, NCDF, GeographicLib, Rcpp, R).
 
+- `terra` provides methods to manipulate geographic (spatial) data in "raster" and "vector" form.
+
+- **Vector** spatial data (points, lines, polygons) are typically used to represent discrete spatial entities, such as a road, country, or bus stop
+
+---
+# Adding basic Map in to the slides 
+<div class="leaflet html-widget html-fill-item" id="htmlwidget-12d60fc41dc756f2afc0" style="width:100%;height:504px;"></div>
+<script type="application/json" data-for="htmlwidget-12d60fc41dc756f2afc0">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"https://openstreetmap.org/copyright/\">OpenStreetMap<\/a>,  <a href=\"https://opendatacommons.org/licenses/odbl/\">ODbL<\/a>"}]},{"method":"addMarkers","args":[23.156644,72.66441,null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},null,null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addCircles","args":[23.156644,72.66441,300,null,null,{"interactive":true,"className":"","stroke":true,"color":"#F00","weight":5,"opacity":0.5,"fill":true,"fillColor":"#F00","fillOpacity":0.2},null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null,null]},{"method":"addMiniMap","args":[null,null,"bottomright",150,150,19,19,-5,false,false,false,false,false,false,{"color":"#ff7800","weight":1,"clickable":false},{"color":"#000000","weight":1,"clickable":false,"opacity":0,"fillOpacity":0},{"hideText":"Hide MiniMap","showText":"Show MiniMap"},[]]}],"setView":[[23.156644,72.66441],11,[]],"limits":{"lat":[23.156644,23.156644],"lng":[72.66441,72.66441]}},"evals":[],"jsHooks":[]}</script>
+
+---
+class: .incremental
+## Basics of R-Programming
+.note[
+- It’s open-source. No fees or licenses are needed.
+- It’s platform-independent.
+- It has lots of packages. 
+- It’s great for statistics. 
+- It’s well suited for Machine Learning. 
+- R lets you perform data wrangling. 
+- R is still growing.
+]
+
+--
+.f3[
+- [Getting Started with R Programming]( https://ankitdeshmukh.com/post/2021-09-20-getting-started-with-r/)&lt;br /&gt; 
+- [Hello R Markdown!](https://ankitdeshmukh.com/post/2021-12-01-r-markdown/)
+]
+
+.f3.blue.b[to the RStudio ...]
+
+---
+## Plotting the map 
+
+.pull-left[
 
 ```r
-library(terra)
+# Plot the output in a map.
+plot(ahm_b10, type="interval", ylab = "Latitude [m]", 
+     xlab = "Longitude [m]", main = "Ahemdabad District")
+
+plot(v, border = "#220066", 
+     lwd = 1.5, add = TRUE)
+
+sbar(50000, xy = "bottomright", 
+     type="bar", below="m", 
+     label=c(0,25000,50000), cex=0.8)
+north(type=3, cex=1)
 ```
+]
+
+.pull-right[
+&lt;img src="images/Ahm10.png" width="100%" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+## This different from the traditional GIS software:
+&lt;img src="images/Incorrect_Projection.png" class="w-80 br4 dib center"&gt;
+
+.b.blue[Images with different projection (EPSG:32642 and EPSG:32643 image.)]
+
+---
+## A raster data file
 
 
 ```r
-if(!require(leaflet)){install.packages("leaflet");library(leaflet)}
-
-leaflet() %&gt;%
-  addTiles() %&gt;%
-  setView(lng = 74, lat = 23.4, zoom = 6) %&gt;%
-    addMarkers(lng = 72.664410, lat = 23.156644) %&gt;%
-    addCircles(lng = 72.664410, lat = 23.156644, color = "#F00", radius = 300)
+raster_data &lt;- rast(x = "./data/LS_8_Band_2.tif") # reading the file
+raster_data # Printing
 ```
 
+```
+## class       : SpatRaster 
+## dimensions  : 750, 695, 1  (nrow, ncol, nlyr)
+## resolution  : 30, 30  (x, y)
+## extent      : 250305, 271155, 2551605, 2574105  (xmin, xmax, ymin, ymax)
+## coord. ref. : WGS 84 / UTM zone 43N (EPSG:32643) 
+## source      : LS_8_Band_2.tif 
+## name        : LC08_L2SP_148044_20240118_20240124_02_T1_SR_B2 
+## min value   :                                           6532 
+## max value   :                                          17495
+```
+
+---
+
+## True color composite with visible RGB band
+.pull-left[
+
+```r
+b2 &lt;- rast(x = "./data/LS_8_Band_2.tif") # Blue
+b3 &lt;- rast(x = "./data/LS_8_Band_3.tif") # Green
+b4 &lt;- rast(x = "./data/LS_8_Band_4.tif") # Red
+
+landsatRGB &lt;- c(b4, b3, b2)
+plotRGB(landsatRGB, stretch = "lin")
+```
+]
+
+.pull-right[
+&lt;img src="Slides_files/figure-html/unnamed-chunk-7-1.png" width="100%" /&gt;
+]
+
+---
+## False color composite with NIR, Red, Blue band
+.pull-left[
+
+```r
+b2 &lt;- rast(x = "./data/LS_8_Band_2.tif") # Blue
+b4 &lt;- rast(x = "./data/LS_8_Band_4.tif") # Red
+b5 &lt;- rast(x = "./data/LS_8_Band_5.tif") # NIR
+
+landsatFCC &lt;- c(b5, b4, b2)
+plotRGB(landsatFCC, stretch = "lin")
+```
+]
+
+.pull-right[
+&lt;img src="Slides_files/figure-html/unnamed-chunk-9-1.png" width="100%" /&gt;
+]
+
+---
+## Reading vector data and copping
+
+```r
+if(!require(sf)){install.packages("sf");library(sf)}
+raster_data &lt;- rast( "./data/Large Tiff/Landsat-8-B2.TIF")
+vector_data &lt;- vect(st_read("./Data/Large Tiff/Bounding_Box.gpkg"))
+cropped_data &lt;- terra::crop(x = raster_data, y = vector_data, mask = TRUE) 
+
+writeRaster(x = cropped_data, filename = "./data/Cropped_Image.tif")
+```
+
+&lt;img src="images/Ahm_Data.png" class="w-50 br4 dib center"&gt;
+
+---
+## Single band and composite maps
+
+```r
+par(mfrow = c(2,2))
+plot(b2, main = "Blue", col = gray(0:100 / 100))
+plot(b3, main = "Green", col = gray(0:100 / 100))
+plot(b4, main = "Red", col = gray(0:100 / 100))
+plot(b5, main = "NIR", col = gray(0:100 / 100))
+```
+&lt;img src="images/Band_GrayScale.png" class="w-60 br4 dib center"&gt;
+
+---
+class: .incremental
+# Landsat Bands
+
+.pull-left[
+
+```r
+rast_fname &lt;- paste0("./data/LS_8_Band_",c(1:7,10),".tif")
+sample_rast &lt;- rast(rast_fname)
+names(sample_rast) &lt;- c('ultra-blue', 'blue', 'green', 
+                        'red', 'NIR', 'SWIR1', 'SWIR2', 
+                        "TIR")
+
+sample_rast
+```
+
+```
+## class       : SpatRaster 
+## dimensions  : 750, 695, 8  (nrow, ncol, nlyr)
+## resolution  : 30, 30  (x, y)
+## extent      : 250305, 271155, 2551605, 2574105  (xmin, xmax, ymin, ymax)
+## coord. ref. : WGS 84 / UTM zone 43N (EPSG:32643) 
+## sources     : LS_8_Band_1.tif  
+##               LS_8_Band_2.tif  
+##               LS_8_Band_3.tif  
+##               ... and 5 more source(s)
+## names       : ultra-blue,  blue, green,   red,   NIR, SWIR1, ... 
+## min values  :       6093,  6532,  7920,  7145,  7662,  7455, ... 
+## max values  :      15947, 17495, 20631, 23095, 28933, 54498, ...
+```
+]
+
+--
+.pull-right[
+&lt;img src="images/Landsat_Band.jpg" class="w-80 br1 dib center"&gt;
+]
+
+
+---
+## Vegetation indices
+Let’s define a general function for a ratio based (vegetation) index. In the function below, img is a muti-layer SpatRaster object and i and k are the indices of the layers (layer numbers) used to compute the vegetation index.
+
+
+```r
+vi &lt;- function(img, k, i) {
+    bk &lt;- img[[k]]
+    bi &lt;- img[[i]]
+    vi &lt;- (bk - bi) / (bk + bi)
+    return(vi)
+}
+```
+    
+    
+###  For Landsat NIR = 5, red = 4.
+
+```r
+ndvi &lt;- vi(landsat, 5, 4)
+plot(ndvi, col=rev(terrain.colors(10)), main = "NDVI")
+plot(ndvi, col=rev(rainbow(10)), main="Landsat-NDVI")
+
+
+GNDVI &lt;- vi(landsat, 5, 3)
+```
+
+---
+## References
+- https://github.com/anixn/Geospatial_Analysis_with_R.git
+- https://agroimpacts.github.io/geospaar/
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
