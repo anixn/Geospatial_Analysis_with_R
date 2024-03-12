@@ -157,7 +157,7 @@ Open source refers to software that is designed to be publicly accessible, allow
 
 ---
 class: .incremental
-# Basic data type in GIS
+## Basic data type in GIS
 - **Raster data** consists of continuous cells or pixels, such as elevation or satellite imagery.
 
 --
@@ -201,20 +201,19 @@ etc...
 ---
 
 ## `terra`: for spatial data analysis
-
-> This package is an attempt to climb on the shoulders of giants (GDAL, PROJ, GEOS, NCDF, GeographicLib, Rcpp, R).
+This package is an attempt to climb on the shoulders of giants (GDAL, PROJ, GEOS, NCDF, GeographicLib, Rcpp, R).
 
 - `terra` provides methods to manipulate geographic (spatial) data in "raster" and "vector" form.
 
 - **Vector** spatial data (points, lines, polygons) are typically used to represent discrete spatial entities, such as a road, country, or bus stop
 
+.footnote[https://rspatial.org/]
+
 ---
-# Adding basic Map in to the slides 
+## Adding basic Map in to the slides 
 ```{r fig.height=7, echo=FALSE}
 if(!require(leaflet)){install.packages("leaflet");library(leaflet)}
 if(!require(terra)){install.packages("terra");library(terra)}
-
-
 leaflet() %>%
   addTiles() %>%
   setView(lng = 72.664410, lat = 23.156644, zoom = 11) %>%
@@ -271,7 +270,7 @@ knitr::include_graphics("images/Ahm10.png", error = FALSE)
 
 ---
 
-## This different from the traditional GIS software:
+## This is different from the traditional GIS software:
 <img src="images/Incorrect_Projection.png" class="w-80 br4 dib center">
 
 .b.blue[Images with different projection (EPSG:32642 and EPSG:32643 image.)]
@@ -360,15 +359,15 @@ plot(b5, main = "NIR", col = gray(0:100 / 100))
 
 ---
 class: .incremental
-# Landsat Bands
+## Landsat Bands
 
 .pull-left[
 ```{r, results='markup'}
 rast_fname <- paste0("./data/LS_8_Band_",c(1:7,10),".tif")
 sample_rast <- rast(rast_fname)
-names(sample_rast) <- c('ultra-blue', 'blue', 'green', 
-                        'red', 'NIR', 'SWIR1', 'SWIR2', 
-                        "TIR")
+names(sample_rast) <- c('ultra-blue', 'blue', 
+                        'green', 'red', 'NIR', 
+                        'SWIR1', 'SWIR2',"TIR")
 
 sample_rast
 ```
@@ -378,10 +377,27 @@ sample_rast
 <img src="images/Landsat_Band.jpg" class="w-80 br1 dib center">
 ]
 
+---
+## Relation between bands
+A scatterplot matrix can be helpful in exploring relationships between raster layers. This can be done with the pairs function. 
+.pull-left[
+```{r, fig.height=6}
+pairs(sample_rast[[1:2]], main = "UB versus Blue")
+```
+]
+.pull-right[
+
+```{r, fig.height=6}
+pairs(sample_rast[[4:5]], main = "Red versus NIR")
+```
+
+]
 
 ---
 ## Vegetation indices
-Let’s define a general function for a ratio based (vegetation) index. In the function below, img is a muti-layer SpatRaster object and i and k are the indices of the layers (layer numbers) used to compute the vegetation index.
+Vegetation indices (VIs) provide valuable insights into the health, and distribution of vegetation across landscapes.
+
+> In the function below, img is a muti-layer SpatRaster object and i and k are the indices of the layers (layer numbers) used to compute the vegetation index.
 
 ```{r}
 vi <- function(img, k, i) {
@@ -391,19 +407,152 @@ vi <- function(img, k, i) {
     return(vi)
 }
 ```
-    
-    
-###  For Landsat NIR = 5, red = 4.
+
+---
+##  Compute NDVI and GNDVI with Landsat-8 bands.
+.pull-left[
+The normalized difference vegetation index (NDVI): a metric for quantifying the health and density of vegetation.
+```{r fig.height=5}
+ndvi <- vi(sample_rast, 5, 4)
+plot(ndvi, col=rev(rainbow(10)), main = "NDVI")
+```
+]
+
+.pull-right[
+Green Normalized Difference Vegetation Index (GNDVI): estimating photo synthetic activity.
+```{r fig.height=5}
+gndvi <- vi(sample_rast, 5, 3)
+plot(gndvi, col=rev(terrain.colors(10)), main="GNDVI")
+```
+]
+
+
+---
+## Histogram
+.pull-left[
+- To represent the distribution of values contained within our raster using hist to produces a histogram. 
+- Histograms are often useful in identifying **outliers** and bad data values in our raster data.
+
 ```{r, eval=FALSE}
-ndvi <- vi(landsat, 5, 4)
-plot(ndvi, col=rev(terrain.colors(10)), main = "NDVI")
-plot(ndvi, col=rev(rainbow(10)), main="Landsat-NDVI")
+hist(ndvi, main = "NDVI values", 
+     xlab = "NDVI", 
+     ylab= "Frequency", 
+     col = "#ffaa00", 
+     xlim = c(-0.5, 1),
+     breaks = 30, xaxt = "n")
 
+axis(side=1, at = seq(-0.6, 1, 0.2), 
+     labels = seq(-0.6, 1, 0.2))
+```
+]
+.pull-right[
+```{r, echo=FALSE}
+hist(ndvi, main = "NDVI values", xlab = "NDVI", ylab= "Frequency",
+col = "#ffaa00", xlim = c(-0.5, 1),
+breaks = 30, xaxt = "n")
+axis(side=1, at = seq(-0.6, 1, 0.2), labels = seq(-0.6, 1, 0.2))
+```
+]
 
-GNDVI <- vi(landsat, 5, 3)
+---
+## Thresholding
+.pull-left[
+We can apply threshold for values such as NDVI range [0.2 - 0.35] 
+- Note that NDVI values are standardized and ranges between -1 to +1. 
+- Higher values indicate more green cover.
+
+```{r, eval=FALSE, results='markup'}
+classify_mat <- c(-Inf, 0.25, NA, 0.25, 0.3, 1, 0.3, Inf, NA)
+Ranges <- matrix(classify_mat, ncol = 3, byrow = TRUE)
+Ranges
+
+land_class <- classify(ndvi, Ranges)
+plot(land_class, main = 'NDVI between [0.2 - 0.35]')
+```
+]
+.pull-right[
+```{r, echo=FALSE}
+classify_mat <- c(-Inf, 0.25, NA, 0.25, 0.3, 1, 0.3, Inf, NA)
+Ranges <- matrix(classify_mat, ncol = 3, byrow = TRUE)
+land_class <- classify(ndvi, Ranges)
+plot(land_class, main = 'NDVI between [0.2 - 0.35]')
+```
+]
+
+---
+## Thresholding based on multiple class with `classify` function
+.pull-left[
+
+```{r, eval=FALSE}
+library(RColorBrewer)
+Classes <- c(-1,0.25, 0.3, 0.4, 0.5, 1)
+Class_data <- classify(ndvi, Classes)
+plot(Class_data, 
+     col = brewer.pal(n = 5, name = "Dark2"), 
+     main = 'NDVI based thresholding')
+```
+]
+.pull-right[
+
+```{r, echo=FALSE}
+library(RColorBrewer)
+Classes <- c(-1,0.25, 0.3, 0.4, 0.5, 1)
+Class_data <- classify(ndvi, Classes)
+plot(Class_data, 
+     col = brewer.pal(n = 5, name = "Dark2"), 
+     main = 'NDVI based thresholding')
+```
+]
+
+---
+## Clustering of Data
+Clustering of `NDVI` layer
+```{r, results='markup'}
+set.seed(123)
+nr <- as.data.frame(ndvi, cell=TRUE)
+head(nr)
 ```
 
 ---
-## References
+## K-means clustering of data 
+We create 6 clusters, allow 500 iterations, start with 5 random sets using "Lloyd" method.
+```{r,results='markup'}
+kmncluster <- kmeans(nr[,-1], centers=6, iter.max = 500, nstart = 5, algorithm="Lloyd")
+
+str(kmncluster)
+```
+---
+## Visulize the clusters
+
+```{r, results='markup'}
+# Use the ndvi object to set the cluster values to a new raster
+knr <- rast(ndvi, nlyr=1)
+knr[nr$cell] <- kmncluster$cluster
+knr
+```
+---
+## Visulize the clusters
+
+```{r, eval=FALSE}
+mycolor <- c("#fef64b", "#ff0000", "#daa520",
+             "#0000ff", "#00ff00", "#f400f3")
+par(mfrow = c(1,2))
+plot(ndvi, col = rev(terrain.colors(6)), main = "Landsat-NDVI")
+plot(knr, main = 'Unsupervised classification', col = mycolor, type="classes")
+```
+<img src="images/Clustering.png" class="w-70 br4 dib center">
+
+---
+## Acknowledgment 
+Concept and some codes are adopted form "Aniruddha Ghosh and Robert J. Hijmans"
+
+## Reading Material
+- https://ankitdeshmukh.com/post/
 - https://github.com/anixn/Geospatial_Analysis_with_R.git
 - https://agroimpacts.github.io/geospaar/
+- https://www.usgs.gov/landsat-missions/landsat-enhanced-vegetation-index
+- https://www.datanovia.com/en/blog/top-r-color-palettes-to-know-for-great-data-visualization/
+- https://pro.arcgis.com/en/pro-app/latest/arcpy/image-analyst/gnvdi.htm
+- https://cran.r-project.org/web/packages/HSAUR/vignettes/Ch_introduction_to_R.pdf
+- https://r.geocompx.org/
+- https://rspatial.org/
