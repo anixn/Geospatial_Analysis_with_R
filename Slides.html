@@ -115,7 +115,7 @@ top:1em;right:1em;
 class: .incremental
 
 ## Outline of this talk!
-- .f2[What is Geo-spatial analysis?]
+- .f2[What is Geospatial analysis?]
 --
 
 - .f2[Why use scripting for Spatial analysis?]
@@ -126,7 +126,7 @@ class: .incremental
   - Basics of R. 
 --
 
-- .f2[Geo spatial Analysis with R.]
+- .f2[Geospatial Analysis with R.]
   - Basics of GIS datatypes
   - Raster operations.
   - Vector operations.
@@ -139,24 +139,26 @@ class: .incremental
 ---
 class: .incremental
 ## What do we understand from "Geospatial Analysis"?
+.f3[
+- A multidisciplinary approach involving patterns identification, relationships, and trends within geographic data.
 
-A multidisciplinary approach involving patterns identification, relationships, and trends within geographic data. 
-
-- Concepts from geography, cartography, geographic information systems (GIS), and statistical analysis to gain insights into spatial phenomena. 
-
-.f3[Key components of geo-spatial analysis include:]
-
---
-- **Geographic Information Systems (GIS):** GIS is a technology that enables the capture, storage, analysis, and visualization of spatial data.
+- Concepts from geography, cartography, geographic information systems (GIS), and statistical analysis to gain insights into spatial phenomena.
+] 
 
 --
-- **Remote Sensing:** Remote sensing involves acquiring information about the Earth's surface without direct physical contact.
+### Key components of geospatial analysis include
 
 --
-- **Spatial Statistics:** This involves the application of statistical techniques to analyze spatial patterns and relationships.
+- **Geographic Information Systems (GIS):** GIS is a technology that enables the capture, storage, analysis, and visualization of spatial data. &lt;br /&gt;
 
 --
-- **Spatial Modeling:** This involves creating mathematical representations of spatial relationships to simulate and predict real-world phenomena. 
+- **Remote Sensing:** Remote sensing involves acquiring information about the Earth's surface without direct physical contact. &lt;br /&gt; 
+
+--
+- **Spatial Statistics:** This involves the application of statistical techniques to analyze spatial patterns and relationships. &lt;br /&gt; 
+
+--
+- **Spatial Modeling:** This involves creating mathematical representations of spatial relationships to simulate and predict real-world phenomena. &lt;br /&gt; 
 
 ---
 class: .incremental
@@ -197,11 +199,11 @@ class: .incremental
 ]
  
 ---
-## The shift towards open geospatial:
+## The shift towards open geospatial
 Open source refers to software that is designed to be publicly accessible, allowing anyone to see, modify, and distribute the code as they see fit.
 
 .pull-left[
-- Open Data applies the principles of free and open to geo-spatial data.
+- Open Data applies the principles of free and open to geospatial data.
 
 - Open Education applies the principles of open source to the creation of teaching materials allowing organizations to share syllabus materials reducing cost and reaching a wider audience.
 
@@ -226,17 +228,19 @@ Open source refers to software that is designed to be publicly accessible, allow
 
 ---
 class: .incremental
-## Basic data type in GIS
+## Basic data types in GIS
+.pull-left[
 - **Raster data** consists of continuous cells or pixels, such as elevation or satellite imagery.
 
---
 - **Vector data** is the most common type of GIS data. Vector data represents geographic data symbolized as points, lines, or polygons.
 
---
-
 - **GeoPackage (GPKG)** is an open, non-proprietary, platform-independent and standards-based data format for geographic information systems. 
-  - GeoPackage can store multiple types of geospatial data, including vector data, raster data, and attribute data.
-  - Portability: GeoPackage is a single file format that can be easily transferred between different devices, operating systems, and GIS software.
+  - Can store multiple types of geospatial data
+  - Portability.
+]
+.pull-right[
+&lt;img src="images/Data.png" class="w-80 br4 dib center"&gt;
+]
 
 ---
 class: .incremental
@@ -274,14 +278,15 @@ This package is an attempt to climb on the shoulders of giants (GDAL, PROJ, GEOS
 
 - `terra` provides methods to manipulate geographic (spatial) data in "raster" and "vector" form.
 
-- **Vector** spatial data (points, lines, polygons) are typically used to represent discrete spatial entities, such as a road, country, or bus stop
+&lt;img src="images/terra.png" class="w-80 br4 dib center"&gt;
 
-.footnote[https://rspatial.org/]
+.footnote[https://rspatial.org/ | https://github.com/rspatial/terra]
 
 ---
-## Adding basic Map in to the slides 
-<div class="leaflet html-widget html-fill-item" id="htmlwidget-4b33b9b021ce1bcf8870" style="width:100%;height:504px;"></div>
-<script type="application/json" data-for="htmlwidget-4b33b9b021ce1bcf8870">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"https://openstreetmap.org/copyright/\">OpenStreetMap<\/a>,  <a href=\"https://opendatacommons.org/licenses/odbl/\">ODbL<\/a>"}]},{"method":"addMarkers","args":[23.156644,72.66441,null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},null,null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addCircles","args":[23.156644,72.66441,300,null,null,{"interactive":true,"className":"","stroke":true,"color":"#F00","weight":5,"opacity":0.5,"fill":true,"fillColor":"#F00","fillOpacity":0.2},null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null,null]},{"method":"addMiniMap","args":[null,null,"bottomright",150,150,19,19,-5,false,false,false,false,false,false,{"color":"#ff7800","weight":1,"clickable":false},{"color":"#000000","weight":1,"clickable":false,"opacity":0,"fillOpacity":0},{"hideText":"Hide MiniMap","showText":"Show MiniMap"},[]]}],"setView":[[23.156644,72.66441],11,[]],"limits":{"lat":[23.156644,23.156644],"lng":[72.66441,72.66441]}},"evals":[],"jsHooks":[]}</script>
+## Adding basic Map in to the slides
+A javascript library for R.
+<div class="leaflet html-widget html-fill-item" id="htmlwidget-154774a0ece7ab2f7bf8" style="width:100%;height:504px;"></div>
+<script type="application/json" data-for="htmlwidget-154774a0ece7ab2f7bf8">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"https://openstreetmap.org/copyright/\">OpenStreetMap<\/a>,  <a href=\"https://opendatacommons.org/licenses/odbl/\">ODbL<\/a>"}]},{"method":"addMarkers","args":[23.156644,72.66441,null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},null,null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addCircles","args":[23.156644,72.66441,300,null,null,{"interactive":true,"className":"","stroke":true,"color":"#F00","weight":5,"opacity":0.5,"fill":true,"fillColor":"#F00","fillOpacity":0.2},null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null,null]},{"method":"addMiniMap","args":[null,null,"bottomright",150,150,19,19,-5,false,false,false,false,false,false,{"color":"#ff7800","weight":1,"clickable":false},{"color":"#000000","weight":1,"clickable":false,"opacity":0,"fillOpacity":0},{"hideText":"Hide MiniMap","showText":"Show MiniMap"},[]]}],"setView":[[23.156644,72.66441],11,[]],"limits":{"lat":[23.156644,23.156644],"lng":[72.66441,72.66441]}},"evals":[],"jsHooks":[]}</script>
 
 ---
 class: .incremental
@@ -329,11 +334,18 @@ north(type=3, cex=1)
 ]
 
 ---
+## Reading vector data and copping
 
-## This is different from the traditional GIS software:
-&lt;img src="images/Incorrect_Projection.png" class="w-80 br4 dib center"&gt;
+```r
+if(!require(sf)){install.packages("sf");library(sf)}
+raster_data &lt;- rast( "./data/Large Tiff/Landsat-8-B2.TIF")
+vector_data &lt;- vect(st_read("./Data/Large Tiff/Bounding_Box.gpkg"))
+cropped_data &lt;- terra::crop(x = raster_data, y = vector_data, mask = TRUE) 
 
-.b.blue[Images with different projection (EPSG:32642 and EPSG:32643 image.)]
+writeRaster(x = cropped_data, filename = "./data/Cropped_Image.tif")
+```
+
+&lt;img src="images/Ahm_Data.png" class="w-50 br4 dib center"&gt;
 
 ---
 ## A raster data file
@@ -355,69 +367,12 @@ raster_data # Printing
 ## min value   :                                           6532 
 ## max value   :                                          17495
 ```
-
 ---
 
-## True color composite with visible RGB band
-.pull-left[
+## This is different from the traditional GIS software:
+&lt;img src="images/Incorrect_Projection.png" class="w-80 br4 dib center"&gt;
 
-```r
-b2 &lt;- rast(x = "./data/LS_8_Band_2.tif") # Blue
-b3 &lt;- rast(x = "./data/LS_8_Band_3.tif") # Green
-b4 &lt;- rast(x = "./data/LS_8_Band_4.tif") # Red
-
-landsatRGB &lt;- c(b4, b3, b2)
-plotRGB(landsatRGB, stretch = "lin")
-```
-]
-
-.pull-right[
-&lt;img src="Slides_files/figure-html/unnamed-chunk-7-1.png" width="100%" /&gt;
-]
-
----
-## False color composite with NIR, Red, Blue band
-.pull-left[
-
-```r
-b2 &lt;- rast(x = "./data/LS_8_Band_2.tif") # Blue
-b4 &lt;- rast(x = "./data/LS_8_Band_4.tif") # Red
-b5 &lt;- rast(x = "./data/LS_8_Band_5.tif") # NIR
-
-landsatFCC &lt;- c(b5, b4, b2)
-plotRGB(landsatFCC, stretch = "lin")
-```
-]
-
-.pull-right[
-&lt;img src="Slides_files/figure-html/unnamed-chunk-9-1.png" width="100%" /&gt;
-]
-
----
-## Reading vector data and copping
-
-```r
-if(!require(sf)){install.packages("sf");library(sf)}
-raster_data &lt;- rast( "./data/Large Tiff/Landsat-8-B2.TIF")
-vector_data &lt;- vect(st_read("./Data/Large Tiff/Bounding_Box.gpkg"))
-cropped_data &lt;- terra::crop(x = raster_data, y = vector_data, mask = TRUE) 
-
-writeRaster(x = cropped_data, filename = "./data/Cropped_Image.tif")
-```
-
-&lt;img src="images/Ahm_Data.png" class="w-50 br4 dib center"&gt;
-
----
-## Single band and composite maps
-
-```r
-par(mfrow = c(2,2))
-plot(b2, main = "Blue", col = gray(0:100 / 100))
-plot(b3, main = "Green", col = gray(0:100 / 100))
-plot(b4, main = "Red", col = gray(0:100 / 100))
-plot(b5, main = "NIR", col = gray(0:100 / 100))
-```
-&lt;img src="images/Band_GrayScale.png" class="w-60 br4 dib center"&gt;
+.b.blue[Images with different projection (EPSG:32642 and EPSG:32643 image.)]
 
 ---
 class: .incremental
@@ -456,6 +411,54 @@ sample_rast
 ]
 
 ---
+## Single band and composite maps
+
+```r
+par(mfrow = c(2,2))
+plot(b2, main = "Blue", col = gray(0:100 / 100))
+plot(b3, main = "Green", col = gray(0:100 / 100))
+plot(b4, main = "Red", col = gray(0:100 / 100))
+plot(b5, main = "NIR", col = gray(0:100 / 100))
+```
+&lt;img src="images/Band_GrayScale.png" class="w-60 br4 dib center"&gt;
+
+---
+## True color composite with visible RGB band
+.pull-left[
+
+```r
+b2 &lt;- rast(x = "./data/LS_8_Band_2.tif") # Blue
+b3 &lt;- rast(x = "./data/LS_8_Band_3.tif") # Green
+b4 &lt;- rast(x = "./data/LS_8_Band_4.tif") # Red
+
+landsatRGB &lt;- c(b4, b3, b2)
+plotRGB(landsatRGB, stretch = "lin")
+```
+]
+
+.pull-right[
+&lt;img src="Slides_files/figure-html/unnamed-chunk-10-1.png" width="100%" /&gt;
+]
+
+---
+## False color composite with NIR, Red, Blue band
+.pull-left[
+
+```r
+b2 &lt;- rast(x = "./data/LS_8_Band_2.tif") # Blue
+b4 &lt;- rast(x = "./data/LS_8_Band_4.tif") # Red
+b5 &lt;- rast(x = "./data/LS_8_Band_5.tif") # NIR
+
+landsatFCC &lt;- c(b5, b4, b2)
+plotRGB(landsatFCC, stretch = "lin")
+```
+]
+
+.pull-right[
+&lt;img src="Slides_files/figure-html/unnamed-chunk-12-1.png" width="100%" /&gt;
+]
+
+---
 ## Relation between bands
 A scatterplot matrix can be helpful in exploring relationships between raster layers. This can be done with the pairs function. 
 .pull-left[
@@ -474,7 +477,6 @@ pairs(sample_rast[[4:5]], main = "Red versus NIR")
 ```
 
 &lt;img src="Slides_files/figure-html/unnamed-chunk-14-1.png" width="100%" /&gt;
-
 ]
 
 ---
@@ -492,7 +494,6 @@ vi &lt;- function(img, k, i) {
     return(vi)
 }
 ```
-
 ---
 ##  Compute NDVI and GNDVI with Landsat-8 bands.
 .pull-left[
@@ -516,7 +517,6 @@ plot(gndvi, col=rev(terrain.colors(10)), main="GNDVI")
 
 &lt;img src="Slides_files/figure-html/unnamed-chunk-17-1.png" width="100%" /&gt;
 ]
-
 
 ---
 ## Histogram
@@ -670,11 +670,6 @@ Concept and some codes are adopted form "Aniruddha Ghosh and Robert J. Hijmans"
 ## Reading Material
 - https://ankitdeshmukh.com/post/
 - https://github.com/anixn/Geospatial_Analysis_with_R.git
-- https://agroimpacts.github.io/geospaar/
-- https://www.usgs.gov/landsat-missions/landsat-enhanced-vegetation-index
-- https://www.datanovia.com/en/blog/top-r-color-palettes-to-know-for-great-data-visualization/
-- https://pro.arcgis.com/en/pro-app/latest/arcpy/image-analyst/gnvdi.htm
-- https://cran.r-project.org/web/packages/HSAUR/vignettes/Ch_introduction_to_R.pdf
 - https://r.geocompx.org/
 - https://rspatial.org/
     </textarea>
