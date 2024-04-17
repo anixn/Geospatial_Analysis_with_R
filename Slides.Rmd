@@ -288,13 +288,15 @@ knitr::include_graphics("images/Ahm10.png", error = FALSE)
 ---
 ## Reading vector data and copping
 ```{r, eval=FALSE}
-if(!require(sf)){install.packages("sf");library(sf)}
-raster_data <- rast( "./data/Large Tiff/Landsat-8-B2.TIF")
+if (!require(sf)) {
+     install.packages("sf")
+     library(sf)
+}
+raster_data <- rast("./data/Large Tiff/Landsat-8-B2.TIF")
 vector_data <- vect(st_read("./Data/Large Tiff/Bounding_Box.gpkg"))
-cropped_data <- terra::crop(x = raster_data, y = vector_data, mask = TRUE) 
+cropped_data <- terra::crop(x = raster_data, y = vector_data, mask = TRUE)
 
 writeRaster(x = cropped_data, filename = "./data/Cropped_Image.tif")
-
 ```
 
 <img src="images/Ahm_Data.png" class="w-50 br4 dib center">
@@ -319,11 +321,13 @@ class: .incremental
 
 .pull-left[
 ```{r, results='markup'}
-rast_fname <- paste0("./data/LS_8_Band_",c(1:7,10),".tif")
+rast_fname <- paste0("./data/LS_8_Band_", c(1:7, 10), ".tif")
 sample_rast <- rast(rast_fname)
-names(sample_rast) <- c('ultra-blue', 'blue', 
-                        'green', 'red', 'NIR', 
-                        'SWIR1', 'SWIR2',"TIR")
+names(sample_rast) <- c(
+     "ultra-blue", "blue",
+     "green", "red", "NIR",
+     "SWIR1", "SWIR2", "TIR"
+)
 
 sample_rast
 ```
@@ -336,7 +340,7 @@ sample_rast
 ---
 ## Single band and composite maps
 ```{r, fig.dim=2,eval=FALSE}
-par(mfrow = c(2,2))
+par(mfrow = c(2, 2))
 plot(b2, main = "Blue", col = gray(0:100 / 100))
 plot(b3, main = "Green", col = gray(0:100 / 100))
 plot(b4, main = "Red", col = gray(0:100 / 100))
