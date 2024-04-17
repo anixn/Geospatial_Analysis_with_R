@@ -212,14 +212,20 @@ This package is an attempt to climb on the shoulders of giants (GDAL, PROJ, GEOS
 ---
 ## Adding basic Map in to the slides 
 ```{r fig.height=7, echo=FALSE}
-if(!require(leaflet)){install.packages("leaflet");library(leaflet)}
-if(!require(terra)){install.packages("terra");library(terra)}
+if (!require(leaflet)) {
+     install.packages("leaflet")
+     library(leaflet)
+}
+if (!require(terra)) {
+     install.packages("terra")
+     library(terra)
+}
 leaflet() %>%
-  addTiles() %>%
-  setView(lng = 72.664410, lat = 23.156644, zoom = 11) %>%
-    addMarkers(lng = 72.664410, lat = 23.156644) %>%
-    addCircles(lng = 72.664410, lat = 23.156644, color = "#F00", radius = 300) %>%
-    addMiniMap(width = 150, height = 150)
+     addTiles() %>%
+     setView(lng = 72.664410, lat = 23.156644, zoom = 11) %>%
+     addMarkers(lng = 72.664410, lat = 23.156644) %>%
+     addCircles(lng = 72.664410, lat = 23.156644, color = "#F00", radius = 300) %>%
+     addMiniMap(width = 150, height = 150)
 ```
 
 ---
@@ -249,16 +255,22 @@ class: .incremental
 .pull-left[
 ```{r, eval=FALSE}
 # Plot the output in a map.
-plot(ahm_b10, type="interval", ylab = "Latitude [m]", 
-     xlab = "Longitude [m]", main = "Ahemdabad District")
+plot(ahm_b10,
+     type = "interval", ylab = "Latitude [m]",
+     xlab = "Longitude [m]", main = "Ahemdabad District"
+)
 
-plot(v, border = "#220066", 
-     lwd = 1.5, add = TRUE)
+plot(v,
+     border = "#220066",
+     lwd = 1.5, add = TRUE
+)
 
-sbar(50000, xy = "bottomright", 
-     type="bar", below="m", 
-     label=c(0,25000,50000), cex=0.8)
-north(type=3, cex=1)
+sbar(50000,
+     xy = "bottomright",
+     type = "bar", below = "m",
+     label = c(0, 25000, 50000), cex = 0.8
+)
+north(type = 3, cex = 1)
 ```
 ]
 
@@ -335,13 +347,15 @@ plotRGB(landsatFCC, stretch = "lin")
 ---
 ## Reading vector data and copping
 ```{r, eval=FALSE}
-if(!require(sf)){install.packages("sf");library(sf)}
-raster_data <- rast( "./data/Large Tiff/Landsat-8-B2.TIF")
+if (!require(sf)) {
+     install.packages("sf")
+     library(sf)
+}
+raster_data <- rast("./data/Large Tiff/Landsat-8-B2.TIF")
 vector_data <- vect(st_read("./Data/Large Tiff/Bounding_Box.gpkg"))
-cropped_data <- terra::crop(x = raster_data, y = vector_data, mask = TRUE) 
+cropped_data <- terra::crop(x = raster_data, y = vector_data, mask = TRUE)
 
 writeRaster(x = cropped_data, filename = "./data/Cropped_Image.tif")
-
 ```
 
 <img src="images/Ahm_Data.png" class="w-50 br4 dib center">
@@ -349,7 +363,7 @@ writeRaster(x = cropped_data, filename = "./data/Cropped_Image.tif")
 ---
 ## Single band and composite maps
 ```{r, fig.dim=2,eval=FALSE}
-par(mfrow = c(2,2))
+par(mfrow = c(2, 2))
 plot(b2, main = "Blue", col = gray(0:100 / 100))
 plot(b3, main = "Green", col = gray(0:100 / 100))
 plot(b4, main = "Red", col = gray(0:100 / 100))
@@ -363,11 +377,13 @@ class: .incremental
 
 .pull-left[
 ```{r, results='markup'}
-rast_fname <- paste0("./data/LS_8_Band_",c(1:7,10),".tif")
+rast_fname <- paste0("./data/LS_8_Band_", c(1:7, 10), ".tif")
 sample_rast <- rast(rast_fname)
-names(sample_rast) <- c('ultra-blue', 'blue', 
-                        'green', 'red', 'NIR', 
-                        'SWIR1', 'SWIR2',"TIR")
+names(sample_rast) <- c(
+     "ultra-blue", "blue",
+     "green", "red", "NIR",
+     "SWIR1", "SWIR2", "TIR"
+)
 
 sample_rast
 ```
@@ -401,10 +417,10 @@ Vegetation indices (VIs) provide valuable insights into the health, and distribu
 
 ```{r}
 vi <- function(img, k, i) {
-    bk <- img[[k]]
-    bi <- img[[i]]
-    vi <- (bk - bi) / (bk + bi)
-    return(vi)
+     bk <- img[[k]]
+     bi <- img[[i]]
+     vi <- (bk - bi) / (bk + bi)
+     return(vi)
 }
 ```
 
@@ -414,7 +430,7 @@ vi <- function(img, k, i) {
 The normalized difference vegetation index (NDVI): a metric for quantifying the health and density of vegetation.
 ```{r fig.height=5}
 ndvi <- vi(sample_rast, 5, 4)
-plot(ndvi, col=rev(rainbow(10)), main = "NDVI")
+plot(ndvi, col = rev(rainbow(10)), main = "NDVI")
 ```
 ]
 
@@ -422,7 +438,7 @@ plot(ndvi, col=rev(rainbow(10)), main = "NDVI")
 Green Normalized Difference Vegetation Index (GNDVI): estimating photo synthetic activity.
 ```{r fig.height=5}
 gndvi <- vi(sample_rast, 5, 3)
-plot(gndvi, col=rev(terrain.colors(10)), main="GNDVI")
+plot(gndvi, col = rev(terrain.colors(10)), main = "GNDVI")
 ```
 ]
 
@@ -434,23 +450,29 @@ plot(gndvi, col=rev(terrain.colors(10)), main="GNDVI")
 - Histograms are often useful in identifying **outliers** and bad data values in our raster data.
 
 ```{r, eval=FALSE}
-hist(ndvi, main = "NDVI values", 
-     xlab = "NDVI", 
-     ylab= "Frequency", 
-     col = "#ffaa00", 
+hist(ndvi,
+     main = "NDVI values",
+     xlab = "NDVI",
+     ylab = "Frequency",
+     col = "#ffaa00",
      xlim = c(-0.5, 1),
-     breaks = 30, xaxt = "n")
+     breaks = 30, xaxt = "n"
+)
 
-axis(side=1, at = seq(-0.6, 1, 0.2), 
-     labels = seq(-0.6, 1, 0.2))
+axis(
+     side = 1, at = seq(-0.6, 1, 0.2),
+     labels = seq(-0.6, 1, 0.2)
+)
 ```
 ]
 .pull-right[
 ```{r, echo=FALSE}
-hist(ndvi, main = "NDVI values", xlab = "NDVI", ylab= "Frequency",
-col = "#ffaa00", xlim = c(-0.5, 1),
-breaks = 30, xaxt = "n")
-axis(side=1, at = seq(-0.6, 1, 0.2), labels = seq(-0.6, 1, 0.2))
+hist(ndvi,
+     main = "NDVI values", xlab = "NDVI", ylab = "Frequency",
+     col = "#ffaa00", xlim = c(-0.5, 1),
+     breaks = 30, xaxt = "n"
+)
+axis(side = 1, at = seq(-0.6, 1, 0.2), labels = seq(-0.6, 1, 0.2))
 ```
 ]
 
@@ -467,7 +489,7 @@ Ranges <- matrix(classify_mat, ncol = 3, byrow = TRUE)
 Ranges
 
 land_class <- classify(ndvi, Ranges)
-plot(land_class, main = 'NDVI between [0.2 - 0.35]')
+plot(land_class, main = "NDVI between [0.2 - 0.35]")
 ```
 ]
 .pull-right[
@@ -475,7 +497,7 @@ plot(land_class, main = 'NDVI between [0.2 - 0.35]')
 classify_mat <- c(-Inf, 0.25, NA, 0.25, 0.3, 1, 0.3, Inf, NA)
 Ranges <- matrix(classify_mat, ncol = 3, byrow = TRUE)
 land_class <- classify(ndvi, Ranges)
-plot(land_class, main = 'NDVI between [0.2 - 0.35]')
+plot(land_class, main = "NDVI between [0.2 - 0.35]")
 ```
 ]
 
@@ -485,22 +507,24 @@ plot(land_class, main = 'NDVI between [0.2 - 0.35]')
 
 ```{r, eval=FALSE}
 library(RColorBrewer)
-Classes <- c(-1,0.25, 0.3, 0.4, 0.5, 1)
+Classes <- c(-1, 0.25, 0.3, 0.4, 0.5, 1)
 Class_data <- classify(ndvi, Classes)
-plot(Class_data, 
-     col = brewer.pal(n = 5, name = "Dark2"), 
-     main = 'NDVI based thresholding')
+plot(Class_data,
+     col = brewer.pal(n = 5, name = "Dark2"),
+     main = "NDVI based thresholding"
+)
 ```
 ]
 .pull-right[
 
 ```{r, echo=FALSE}
 library(RColorBrewer)
-Classes <- c(-1,0.25, 0.3, 0.4, 0.5, 1)
+Classes <- c(-1, 0.25, 0.3, 0.4, 0.5, 1)
 Class_data <- classify(ndvi, Classes)
-plot(Class_data, 
-     col = brewer.pal(n = 5, name = "Dark2"), 
-     main = 'NDVI based thresholding')
+plot(Class_data,
+     col = brewer.pal(n = 5, name = "Dark2"),
+     main = "NDVI based thresholding"
+)
 ```
 ]
 
@@ -509,7 +533,7 @@ plot(Class_data,
 Clustering of `NDVI` layer
 ```{r, results='markup'}
 set.seed(123)
-nr <- as.data.frame(ndvi, cell=TRUE)
+nr <- as.data.frame(ndvi, cell = TRUE)
 head(nr)
 ```
 
@@ -517,7 +541,7 @@ head(nr)
 ## K-means clustering of data 
 We create 6 clusters, allow 500 iterations, start with 5 random sets using "Lloyd" method.
 ```{r,results='markup'}
-kmncluster <- kmeans(nr[,-1], centers=6, iter.max = 500, nstart = 5, algorithm="Lloyd")
+kmncluster <- kmeans(nr[, -1], centers = 6, iter.max = 500, nstart = 5, algorithm = "Lloyd")
 
 str(kmncluster)
 ```
@@ -526,7 +550,7 @@ str(kmncluster)
 
 ```{r, results='markup'}
 # Use the ndvi object to set the cluster values to a new raster
-knr <- rast(ndvi, nlyr=1)
+knr <- rast(ndvi, nlyr = 1)
 knr[nr$cell] <- kmncluster$cluster
 knr
 ```
@@ -534,11 +558,13 @@ knr
 ## Visulize the clusters
 
 ```{r, eval=FALSE}
-mycolor <- c("#fef64b", "#ff0000", "#daa520",
-             "#0000ff", "#00ff00", "#f400f3")
-par(mfrow = c(1,2))
+mycolor <- c(
+     "#fef64b", "#ff0000", "#daa520",
+     "#0000ff", "#00ff00", "#f400f3"
+)
+par(mfrow = c(1, 2))
 plot(ndvi, col = rev(terrain.colors(6)), main = "Landsat-NDVI")
-plot(knr, main = 'Unsupervised classification', col = mycolor, type="classes")
+plot(knr, main = "Unsupervised classification", col = mycolor, type = "classes")
 ```
 <img src="images/Clustering.png" class="w-70 br4 dib center">
 

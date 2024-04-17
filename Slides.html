@@ -4,7 +4,7 @@
     <title>Geospatial Analysis with R-Programming</title>
     <meta charset="utf-8" />
     <meta name="author" content="Dr. Ankit Deshmukh" />
-    <meta name="date" content="2024-03-12" />
+    <meta name="date" content="2024-04-17" />
     <script src="libs/header-attrs/header-attrs.js"></script>
     <script src="libs/xaringanExtra-progressBar/progress-bar.js"></script>
     <link href="libs/tile-view/tile-view.css" rel="stylesheet" />
@@ -43,7 +43,7 @@ class: center, middle, inverse, title-slide
 ### Department of Civil Engineering,<br />Pandit Deendayal Energy University, Gandhinagar
 ]
 .date[
-### 12 March 2024
+### 17 April 2024
 ]
 
 ---
@@ -280,8 +280,8 @@ This package is an attempt to climb on the shoulders of giants (GDAL, PROJ, GEOS
 
 ---
 ## Adding basic Map in to the slides 
-<div class="leaflet html-widget html-fill-item" id="htmlwidget-4b33b9b021ce1bcf8870" style="width:100%;height:504px;"></div>
-<script type="application/json" data-for="htmlwidget-4b33b9b021ce1bcf8870">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"https://openstreetmap.org/copyright/\">OpenStreetMap<\/a>,  <a href=\"https://opendatacommons.org/licenses/odbl/\">ODbL<\/a>"}]},{"method":"addMarkers","args":[23.156644,72.66441,null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},null,null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addCircles","args":[23.156644,72.66441,300,null,null,{"interactive":true,"className":"","stroke":true,"color":"#F00","weight":5,"opacity":0.5,"fill":true,"fillColor":"#F00","fillOpacity":0.2},null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null,null]},{"method":"addMiniMap","args":[null,null,"bottomright",150,150,19,19,-5,false,false,false,false,false,false,{"color":"#ff7800","weight":1,"clickable":false},{"color":"#000000","weight":1,"clickable":false,"opacity":0,"fillOpacity":0},{"hideText":"Hide MiniMap","showText":"Show MiniMap"},[]]}],"setView":[[23.156644,72.66441],11,[]],"limits":{"lat":[23.156644,23.156644],"lng":[72.66441,72.66441]}},"evals":[],"jsHooks":[]}</script>
+<div class="leaflet html-widget html-fill-item" id="htmlwidget-2fd1c929054e742a5a4b" style="width:100%;height:504px;"></div>
+<script type="application/json" data-for="htmlwidget-2fd1c929054e742a5a4b">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"https://openstreetmap.org/copyright/\">OpenStreetMap<\/a>,  <a href=\"https://opendatacommons.org/licenses/odbl/\">ODbL<\/a>"}]},{"method":"addMarkers","args":[23.156644,72.66441,null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},null,null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addCircles","args":[23.156644,72.66441,300,null,null,{"interactive":true,"className":"","stroke":true,"color":"#F00","weight":5,"opacity":0.5,"fill":true,"fillColor":"#F00","fillOpacity":0.2},null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null,null]},{"method":"addMiniMap","args":[null,null,"bottomright",150,150,19,19,-5,false,false,false,false,false,false,{"color":"#ff7800","weight":1,"clickable":false},{"color":"#000000","weight":1,"clickable":false,"opacity":0,"fillOpacity":0},{"hideText":"Hide MiniMap","showText":"Show MiniMap"},[]]}],"setView":[[23.156644,72.66441],11,[]],"limits":{"lat":[23.156644,23.156644],"lng":[72.66441,72.66441]}},"evals":[],"jsHooks":[]}</script>
 
 ---
 class: .incremental
@@ -311,16 +311,22 @@ class: .incremental
 
 ```r
 # Plot the output in a map.
-plot(ahm_b10, type="interval", ylab = "Latitude [m]", 
-     xlab = "Longitude [m]", main = "Ahemdabad District")
+plot(ahm_b10,
+     type = "interval", ylab = "Latitude [m]",
+     xlab = "Longitude [m]", main = "Ahemdabad District"
+)
 
-plot(v, border = "#220066", 
-     lwd = 1.5, add = TRUE)
+plot(v,
+     border = "#220066",
+     lwd = 1.5, add = TRUE
+)
 
-sbar(50000, xy = "bottomright", 
-     type="bar", below="m", 
-     label=c(0,25000,50000), cex=0.8)
-north(type=3, cex=1)
+sbar(50000,
+     xy = "bottomright",
+     type = "bar", below = "m",
+     label = c(0, 25000, 50000), cex = 0.8
+)
+north(type = 3, cex = 1)
 ```
 ]
 
@@ -397,10 +403,13 @@ plotRGB(landsatFCC, stretch = "lin")
 ## Reading vector data and copping
 
 ```r
-if(!require(sf)){install.packages("sf");library(sf)}
-raster_data &lt;- rast( "./data/Large Tiff/Landsat-8-B2.TIF")
+if (!require(sf)) {
+     install.packages("sf")
+     library(sf)
+}
+raster_data &lt;- rast("./data/Large Tiff/Landsat-8-B2.TIF")
 vector_data &lt;- vect(st_read("./Data/Large Tiff/Bounding_Box.gpkg"))
-cropped_data &lt;- terra::crop(x = raster_data, y = vector_data, mask = TRUE) 
+cropped_data &lt;- terra::crop(x = raster_data, y = vector_data, mask = TRUE)
 
 writeRaster(x = cropped_data, filename = "./data/Cropped_Image.tif")
 ```
@@ -411,7 +420,7 @@ writeRaster(x = cropped_data, filename = "./data/Cropped_Image.tif")
 ## Single band and composite maps
 
 ```r
-par(mfrow = c(2,2))
+par(mfrow = c(2, 2))
 plot(b2, main = "Blue", col = gray(0:100 / 100))
 plot(b3, main = "Green", col = gray(0:100 / 100))
 plot(b4, main = "Red", col = gray(0:100 / 100))
@@ -426,11 +435,13 @@ class: .incremental
 .pull-left[
 
 ```r
-rast_fname &lt;- paste0("./data/LS_8_Band_",c(1:7,10),".tif")
+rast_fname &lt;- paste0("./data/LS_8_Band_", c(1:7, 10), ".tif")
 sample_rast &lt;- rast(rast_fname)
-names(sample_rast) &lt;- c('ultra-blue', 'blue', 
-                        'green', 'red', 'NIR', 
-                        'SWIR1', 'SWIR2',"TIR")
+names(sample_rast) &lt;- c(
+     "ultra-blue", "blue",
+     "green", "red", "NIR",
+     "SWIR1", "SWIR2", "TIR"
+)
 
 sample_rast
 ```
@@ -486,10 +497,10 @@ Vegetation indices (VIs) provide valuable insights into the health, and distribu
 
 ```r
 vi &lt;- function(img, k, i) {
-    bk &lt;- img[[k]]
-    bi &lt;- img[[i]]
-    vi &lt;- (bk - bi) / (bk + bi)
-    return(vi)
+     bk &lt;- img[[k]]
+     bi &lt;- img[[i]]
+     vi &lt;- (bk - bi) / (bk + bi)
+     return(vi)
 }
 ```
 
@@ -500,7 +511,7 @@ The normalized difference vegetation index (NDVI): a metric for quantifying the 
 
 ```r
 ndvi &lt;- vi(sample_rast, 5, 4)
-plot(ndvi, col=rev(rainbow(10)), main = "NDVI")
+plot(ndvi, col = rev(rainbow(10)), main = "NDVI")
 ```
 
 &lt;img src="Slides_files/figure-html/unnamed-chunk-16-1.png" width="100%" /&gt;
@@ -511,7 +522,7 @@ Green Normalized Difference Vegetation Index (GNDVI): estimating photo synthetic
 
 ```r
 gndvi &lt;- vi(sample_rast, 5, 3)
-plot(gndvi, col=rev(terrain.colors(10)), main="GNDVI")
+plot(gndvi, col = rev(terrain.colors(10)), main = "GNDVI")
 ```
 
 &lt;img src="Slides_files/figure-html/unnamed-chunk-17-1.png" width="100%" /&gt;
@@ -526,15 +537,19 @@ plot(gndvi, col=rev(terrain.colors(10)), main="GNDVI")
 
 
 ```r
-hist(ndvi, main = "NDVI values", 
-     xlab = "NDVI", 
-     ylab= "Frequency", 
-     col = "#ffaa00", 
+hist(ndvi,
+     main = "NDVI values",
+     xlab = "NDVI",
+     ylab = "Frequency",
+     col = "#ffaa00",
      xlim = c(-0.5, 1),
-     breaks = 30, xaxt = "n")
+     breaks = 30, xaxt = "n"
+)
 
-axis(side=1, at = seq(-0.6, 1, 0.2), 
-     labels = seq(-0.6, 1, 0.2))
+axis(
+     side = 1, at = seq(-0.6, 1, 0.2),
+     labels = seq(-0.6, 1, 0.2)
+)
 ```
 ]
 .pull-right[
@@ -555,7 +570,7 @@ Ranges &lt;- matrix(classify_mat, ncol = 3, byrow = TRUE)
 Ranges
 
 land_class &lt;- classify(ndvi, Ranges)
-plot(land_class, main = 'NDVI between [0.2 - 0.35]')
+plot(land_class, main = "NDVI between [0.2 - 0.35]")
 ```
 ]
 .pull-right[
@@ -569,11 +584,12 @@ plot(land_class, main = 'NDVI between [0.2 - 0.35]')
 
 ```r
 library(RColorBrewer)
-Classes &lt;- c(-1,0.25, 0.3, 0.4, 0.5, 1)
+Classes &lt;- c(-1, 0.25, 0.3, 0.4, 0.5, 1)
 Class_data &lt;- classify(ndvi, Classes)
-plot(Class_data, 
-     col = brewer.pal(n = 5, name = "Dark2"), 
-     main = 'NDVI based thresholding')
+plot(Class_data,
+     col = brewer.pal(n = 5, name = "Dark2"),
+     main = "NDVI based thresholding"
+)
 ```
 ]
 .pull-right[
@@ -587,7 +603,7 @@ Clustering of `NDVI` layer
 
 ```r
 set.seed(123)
-nr &lt;- as.data.frame(ndvi, cell=TRUE)
+nr &lt;- as.data.frame(ndvi, cell = TRUE)
 head(nr)
 ```
 
@@ -606,7 +622,7 @@ head(nr)
 We create 6 clusters, allow 500 iterations, start with 5 random sets using "Lloyd" method.
 
 ```r
-kmncluster &lt;- kmeans(nr[,-1], centers=6, iter.max = 500, nstart = 5, algorithm="Lloyd")
+kmncluster &lt;- kmeans(nr[, -1], centers = 6, iter.max = 500, nstart = 5, algorithm = "Lloyd")
 
 str(kmncluster)
 ```
@@ -633,7 +649,7 @@ str(kmncluster)
 
 ```r
 # Use the ndvi object to set the cluster values to a new raster
-knr &lt;- rast(ndvi, nlyr=1)
+knr &lt;- rast(ndvi, nlyr = 1)
 knr[nr$cell] &lt;- kmncluster$cluster
 knr
 ```
@@ -655,11 +671,13 @@ knr
 
 
 ```r
-mycolor &lt;- c("#fef64b", "#ff0000", "#daa520",
-             "#0000ff", "#00ff00", "#f400f3")
-par(mfrow = c(1,2))
+mycolor &lt;- c(
+     "#fef64b", "#ff0000", "#daa520",
+     "#0000ff", "#00ff00", "#f400f3"
+)
+par(mfrow = c(1, 2))
 plot(ndvi, col = rev(terrain.colors(6)), main = "Landsat-NDVI")
-plot(knr, main = 'Unsupervised classification', col = mycolor, type="classes")
+plot(knr, main = "Unsupervised classification", col = mycolor, type = "classes")
 ```
 &lt;img src="images/Clustering.png" class="w-70 br4 dib center"&gt;
 
